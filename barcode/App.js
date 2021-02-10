@@ -41,32 +41,32 @@ function DetailsScreen() {
             flashMode={RNCamera.Constants.FlashMode.torch}
             showMarker={true}
             customMarker={
-                <View style= {styles.case}>
-                  <View style = {styles.caseIn} />
-              </View>
+                <View style={styles.case}>
+                    <View style={styles.caseIn} />
+                </View>
             }
         />
     );
-    
+
 }
 const styles = StyleSheet.create({
-  case:{
-    width:"70%",
-    height:"40%",
-    borderColor: 'green',
-    borderWidth: 5,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  caseIn:{
-    width:"90%",
-    height:"3%",
-    marginBottom:30,
-    marginTop:30,
-    backgroundColor:'#FF0000',
-    justifyContent: "center",
-    alignItems: "center"
-  },
+    case: {
+        width: "70%",
+        height: "40%",
+        borderColor: 'green',
+        borderWidth: 5,
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    caseIn: {
+        width: "90%",
+        height: "3%",
+        marginBottom: 30,
+        marginTop: 30,
+        backgroundColor: '#FF0000',
+        justifyContent: "center",
+        alignItems: "center"
+    },
 });
 var rnw;
 var rec;
@@ -79,10 +79,14 @@ const HomeScreen = () => {
         <WebView
             ref={wv => { rnw = wv }}
             onMessage={(event) => {
-              navigation.navigate('ListPage', { num: "안녕" });
-              rec = event.nativeEvent.data;
-              Alert.alert(rec)
-              //list.length= rec;
+                rec = event.nativeEvent.data;
+                if(rec.length==1){
+                    navigation.navigate('ListPage', { num: "안녕" });
+                }
+                else{
+                    rnw.postMessage("app!");
+                }
+                ;
             }}
             source={{ uri: 'http://ip0139.cafe24.com/' }}
             style={{ marginTop: 20 }}
@@ -138,26 +142,26 @@ const ListPage = () => {
         onRefresh()
     }
 
-    function send(){
-      rnw.postMessage(list)
-      navigation.navigate('Home')
+    function send() {
+        rnw.postMessage(list)
+        navigation.navigate('Home')
     }
-    
-    function shift(){
-        if(rec!=''){
-          if(list.length < rec){
-            navigation.navigate('Details')
-            return
-          }else{
-            Alert.alert(rec)
-            return
-          }
+
+    function shift() {
+        if (rec != '') {
+            if (list.length < rec) {
+                navigation.navigate('Details')
+                return
+            } else {
+                Alert.alert("스캔 완료")
+                return
+            }
         }
     }
 
-    useEffect(()=>{
-      shift()
-    },[])
+    useEffect(() => {
+        shift()
+    }, [])
     const Item = (prop) => {
         return (
             <View style={{ flexDirection: 'row' }}>
@@ -199,7 +203,7 @@ const ListPage = () => {
             </TouchableOpacity>
 
 
-            <TouchableOpacity onPress={()=>shift()}>
+            <TouchableOpacity onPress={() => shift()}>
                 <View style={{ width: charwidth, height: 60, backgroundColor: 'gray', bottom: 0 }}>
                     <Text>입력</Text>
                 </View>
