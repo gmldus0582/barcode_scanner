@@ -77,7 +77,7 @@ const HomeScreen = () => {
 
     return (
         <View style={{width:charwidth,height:charheight}}>
-            <TouchableOpacity style={{width:charwidth,height:charheight}} onPress={() => {setTimeout(function (){ Alert.alert('asdasfas'),rnw.postMessage("app!")},300)}}>
+            <TouchableOpacity style={{width:charwidth,height:charheight}} onPress={() => {setTimeout(function (){rnw.postMessage("app!")},300)}}>
             <WebView
                 // style={{ }}
                 ref={wv => { rnw = wv }}
