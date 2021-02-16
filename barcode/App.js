@@ -25,9 +25,6 @@ const charheight = Dimensions.get('window').height;
 const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
 }
-
-
-
 function DetailsScreen() {
     const navigation = useNavigation()
 
@@ -73,13 +70,10 @@ var rec;
 var list = []
 const HomeScreen = () => {
     const navigation = useNavigation()
-
-
     return (
         <View style={{width:charwidth,height:charheight}}>
             <TouchableOpacity style={{width:charwidth,height:charheight}} onPress={() => {setTimeout(function (){rnw.postMessage("app!")},300)}}>
             <WebView
-                // style={{ }}
                 ref={wv => { rnw = wv }}
                 onMessage={(event) => {
                     rec = event.nativeEvent.data;
@@ -92,8 +86,6 @@ const HomeScreen = () => {
                     ;
                 }}
                 source={{ uri: 'http://ip0139.cafe24.com/' }}
-                
-                
             ></WebView>
             </TouchableOpacity>
             </View>
@@ -104,6 +96,11 @@ const HomeScreen = () => {
 const ListPage = () => {
 
     const [refreshing, setRefreshing] = React.useState(false);
+
+    const [swork,SetSwork] = useState('');
+    const [emp,setEmp] = useState('');
+    const [tea,setTea] = useState('')
+
 
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
@@ -117,34 +114,23 @@ const ListPage = () => {
     useEffect(() => {
         if (route.params.num == '안녕') {
         } else {
-            list.push(route.params.num)
-            console.log(list)
+            if(route.params.num.substring(0,1) == 'W'){
+                SetSwork(route.params.num)
+            }else if(route.params.num.substring(0,1) == 'A'){
+                setTea(route.params.num)
+            }else{
+                setEmp(route.params.num)
+            }
             onRefresh()
         }
     }, [route])
 
-    const Push = () => {
-        var pp = []
-        for (var i = 0; i < list.length; i++) {
-            pp.push(<Item key={i} num={list[i]}></Item>)
-        }
-        return pp
-    }
 
-    function delList(num) {
-        for (var i = 0; i < list.length; i++) {
-            if (list[i] == num) {
-                list.splice(i, 1);
-                onRefresh()
-                return
-            }
-        }
-        console.log(list)
-        onRefresh()
-    }
 
     function alldel() {
-        list = []
+        SetSwork('')
+        setEmp('')
+        setTea('')
         onRefresh()
     }
 
@@ -175,20 +161,7 @@ const ListPage = () => {
     useEffect(() => {
         shift()
     }, [])
-    const Item = (prop) => {
-        return (
-            <View style={{ flexDirection: 'row' }}>
-                <View style={{ borderWidth: 0.5, width: charwidth - 60, height: 60 }}>
-                    <Text>{prop.num}</Text>
-                </View>
-                <TouchableOpacity onPress={() => { delList(prop.num), onRefresh() }}>
-                    <View style={{ width: 60, height: 60, backgroundColor: 'gray' }}>
-                        <Text>삭제</Text>
-                    </View>
-                </TouchableOpacity>
-            </View>
-        )
-    }
+    
 
     return (
         <View style={{ width: charwidth, height: charheight }}>
@@ -197,9 +170,52 @@ const ListPage = () => {
                     refreshing={refreshing}
                     onRefresh={onRefresh}
                 />
-            }>
+            }
+            >
+                <View>
+                    <View style={{ flexDirection: 'row' }}>
+                        <View style={{ width: charwidth/5, height: charwidth/8, backgroundColor: 'red' }}>
+                            <Text>작업지시</Text>
+                        </View>
+                        <View style={{ width: charwidth/2, height: charwidth/8, backgroundColor: 'blue' }}>
+                            <Text>{swork}</Text>
+                        </View>
+                        <TouchableOpacity onPress={()=>SetSwork('')}>
+                        <View style={{ width: charwidth/5, height: charwidth/8, backgroundColor: 'gray' }}>
+                            <Text>삭제</Text>
+                        </View>
+                        </TouchableOpacity>
+                    </View>
 
-                <Push new={route.params.num}></Push>
+                    <View style={{ flexDirection: 'row' }}>
+                        <View style={{ width: charwidth/5, height: charwidth/8, backgroundColor: 'red' }}>
+                            <Text>사원</Text>
+                        </View>
+                        <View style={{ width: charwidth/2, height: charwidth/8, backgroundColor: 'blue' }}>
+                            <Text>{emp}</Text>
+                        </View>
+                        <TouchableOpacity onPress={()=>setEmp('')}>
+                        <View style={{ width: charwidth/5, height: charwidth/8, backgroundColor: 'gray' }}>
+                            <Text>삭제</Text>
+                        </View>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={{ flexDirection: 'row' }}>
+                        <View style={{ width: charwidth/5, height: charwidth/8, backgroundColor: 'red' }}>
+                            <Text>미정</Text>
+                        </View>
+                        <View style={{ width: charwidth/2, height: charwidth/8, backgroundColor: 'blue' }}>
+                            <Text>{tea}</Text>
+                        </View>
+                        <TouchableOpacity onPress={()=>setTea('')}>
+                        <View style={{ width: charwidth/5, height: charwidth/8, backgroundColor: 'gray' }}>
+                            <Text>삭제</Text>
+                        </View>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                
             </ScrollView>
 
 
