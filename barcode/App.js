@@ -76,21 +76,27 @@ const HomeScreen = () => {
 
 
     return (
-        <WebView
-            ref={wv => { rnw = wv }}
-            onMessage={(event) => {
-                rec = event.nativeEvent.data;
-                if(rec.length==1){
-                    navigation.navigate('ListPage', { num: "안녕" });
-                }
-                else{
-                    rnw.postMessage("app!");
-                }
-                ;
-            }}
-            source={{ uri: 'http://ip0139.cafe24.com/' }}
-            style={{ marginTop: 20 }}
-        />
+        <View style={{width:charwidth,height:charheight}}>
+            <TouchableOpacity style={{width:charwidth,height:charheight}} onPress={() => {setTimeout(function (){ Alert.alert('asdasfas'),rnw.postMessage("app!")},300)}}>
+            <WebView
+                // style={{ }}
+                ref={wv => { rnw = wv }}
+                onMessage={(event) => {
+                    rec = event.nativeEvent.data;
+                    if(rec.length==1){
+                        navigation.navigate('ListPage', { num: "안녕" });
+                    }
+                    else{
+                        rnw.postMessage("app!");
+                    }
+                    ;
+                }}
+                source={{ uri: 'http://ip0139.cafe24.com/' }}
+                
+                
+            ></WebView>
+            </TouchableOpacity>
+            </View>
     );
 }
 
@@ -143,8 +149,15 @@ const ListPage = () => {
     }
 
     function send() {
-        rnw.postMessage(list)
-        navigation.navigate('Home')
+        if(list.length==3){
+            rnw.postMessage(list)
+            navigation.navigate('Home')
+        }
+        else{
+            Alert.alert("세개 모두 찍어주세요")
+        }
+        
+        
     }
 
     function shift() {
@@ -191,21 +204,21 @@ const ListPage = () => {
 
 
             <TouchableOpacity onPress={() => send()}>
-                <View style={{ width: charwidth, height: 60, backgroundColor: 'blue', bottom: 0 }}>
-                    <Text>완료</Text>
+                <View style={{ width: charwidth, height: 60, backgroundColor: 'yellow', justifyContent:'center', alignItems:'center', bottom: 0 }}>
+                    <Text style={{fontSize:20}}>완료</Text>
                 </View>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => alldel()}>
-                <View style={{ width: charwidth, height: 60, backgroundColor: 'blue', bottom: 0 }}>
-                    <Text>전체삭제</Text>
+                <View style={{ width: charwidth, height: 60, backgroundColor: 'orange', justifyContent:'center', alignItems:'center', bottom: 0 }}>
+                    <Text style={{fontSize:20}}>전체삭제</Text>
                 </View>
             </TouchableOpacity>
 
 
             <TouchableOpacity onPress={() => shift()}>
-                <View style={{ width: charwidth, height: 60, backgroundColor: 'gray', bottom: 0 }}>
-                    <Text>입력</Text>
+                <View style={{ width: charwidth, height: 60, backgroundColor: 'purple', justifyContent:'center', alignItems:'center', bottom: 0 }}>
+                    <Text style={{fontSize:20}} >입력</Text>
                 </View>
             </TouchableOpacity>
         </View>
