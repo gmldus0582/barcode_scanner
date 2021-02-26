@@ -35,30 +35,38 @@ const charheight = Dimensions.get('window').height;
 // }
 
 
+
 const HomeScreen = () => {
     onSuccess = e => {
         rnw.postMessage(e.data);
         setModalVisible(false);
     };
     const [modalVisible, setModalVisible] = useState(false);
+    handleBackPress = () => {
+        setModalVisible(false);
+        return true;
+    }
     return (
-        <View style={{width:charwidth,height:charheight,}}>
-        <WebView
-            style={{width:charwidth,height:charheight,}}
-            ref={wv => { rnw = wv }}
-            source={{ uri: 'http://ip0139.cafe24.com/' }}
-            onMessage={(event) => {
-                setModalVisible(true);
-            }}
-        />
-        <Modal visible = {modalVisible}>
-        <QRCodeScanner
-            onRead={onSuccess}
-            showMarker={true}
-            customMarker={
-                <View style={{width:charwidth/1.2, borderColor:'red', borderWidth:3, }}/>
-            }
-        />
+        <View style={{ width: charwidth, height: charheight, }}>
+            <WebView
+                style={{ width: charwidth, height: charheight, }}
+                ref={wv => { rnw = wv }}
+                source={{ uri: 'http://ip0139.cafe24.com/' }}
+                onMessage={(event) => {
+                    setModalVisible(true);
+                }}
+            />
+            <Modal visible={modalVisible}>
+
+                <QRCodeScanner
+                    onRead={onSuccess}
+                    showMarker={true}
+                    customMarker={
+                        <View style={{ width: charwidth / 1.2, borderColor: 'red', borderWidth: 3, }} />
+                    }
+                    
+                />
+             
         </Modal>
         </View>
 
