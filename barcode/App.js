@@ -85,7 +85,7 @@ const HomeScreen = () => {
                     }
                     ;
                 }}
-                source={{ uri: 'http://ip0139.cafe24.com/' }}
+                source={{ uri: 'MES 웹' }}
             ></WebView>
             </TouchableOpacity>
             </View>
